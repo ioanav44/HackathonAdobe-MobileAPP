@@ -38,7 +38,7 @@ export default function Login() {
                     <Text style={styles.title}>Log in</Text>
                     <Text style={styles.subtitle}>Accesează-ți spațiul de echipă.</Text>
 
-                    <Input label="Email" placeholder="you@company.com" keyboardType="email-address" value={email} onChangeText={setEmail} />
+                    <Input label="Email" placeholder="tu@companie.com" keyboardType="email-address" value={email} onChangeText={setEmail} />
                     <Input label="Parola" placeholder="••••••••" secureTextEntry value={password} onChangeText={setPassword} />
 
                     <Button title="Continuă" onPress={onLogin} style={{ width: '100%', marginTop: theme.spacing(1) }} />

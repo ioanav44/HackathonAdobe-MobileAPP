@@ -1,4 +1,4 @@
-// components/NavBar.jsx
+// Bottom navigation bar component
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Image, Platform, View, Text } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, theme } from '../constants/theme';
 
 const TABS = [
-    { key: 'home',    label: 'Home',   icon: 'home',   href: '/feed' },
+    { key: 'home',    label: 'Acasa',   icon: 'home',   href: '/feed' },
     { key: 'team',    label: 'Echipa', icon: 'people', href: '/team' },
     { key: 'profile', label: 'Profil', icon: 'person', href: '/profile' },
 ];
@@ -22,7 +22,7 @@ export default function NavBar({ user }) {
 
     const current = (pathname.split('/')[1] || 'home').toLowerCase();
 
-    // Ridicăm bara de pe marginea ecranului și lăsăm loc safe-area
+    // Leave space for safe-area at the bottom
     const bottomOffset = (insets.bottom || 0) + 16;
 
     return (
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         left: 16,
         right: 16,
         borderRadius: 18,
-        overflow: 'hidden', // păstrăm pentru glass; nu taie conținutul acum că avem padding corect
+    overflow: 'hidden', // keep for glass effect
         shadowColor: '#000',
         shadowOpacity: 0.18,
         shadowRadius: 12,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-around',
         paddingHorizontal: 8,
-        paddingTop: 8,                    // și sus un pic de aer
+    paddingTop: 8, // small top padding
     },
     button: {
         flex: 1,

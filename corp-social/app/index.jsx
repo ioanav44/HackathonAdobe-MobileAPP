@@ -16,7 +16,6 @@ export default function Welcome() {
         <Screen style={{ alignItems: 'center', justifyContent: 'center' }}>
             <StatusBar barStyle="light-content" />
 
-            {/* Fundal gradient vibrant */}
             <LinearGradient
                 colors={[colors.primary, colors.secondary]}
                 start={{ x: 0.1, y: 0 }}
@@ -24,26 +23,25 @@ export default function Welcome() {
                 style={StyleSheet.absoluteFill}
             />
 
-            {/* Forme subtile în fundal */}
             <View style={[styles.blob, styles.blobA, { backgroundColor: colors.tertiary, opacity: 0.1 }]} />
             <View style={[styles.blob, styles.blobB, { backgroundColor: '#ffffff', opacity: 0.08 }]} />
             <View style={[styles.blob, styles.blobC, { backgroundColor: '#FFD7AE', opacity: 0.08 }]} />
 
             <View style={styles.wrap}>
                 <View style={styles.pill}>
-                    <Text style={styles.pillText}>internal • team space</Text>
+                    <Text style={styles.pillText}>Cu echipa • rămâi conectat</Text>
                 </View>
 
-                {/* CARD UNIFORM GRI TRANSPARENT */}
+           
                 <BlurView intensity={60} tint="dark" style={styles.glass}>
                     <View style={styles.cardOverlay} />
 
-                    <Text style={styles.headTop}>Welcome back</Text>
-                    <Text style={styles.headBottom}>Connect. Share. Grow.</Text>
+                    <Text style={styles.headTop}>Bine ai venit!</Text>
+                    <Text style={styles.headBottom}>Conectează-te. Împărtășește. Crește.</Text>
 
 
                     <Button
-                        title="Log in"
+                        title="Conectare"
                         onPress={() => router.push('/login')}
                         style={[styles.action, { width: '100%' }]}
                     />
@@ -66,7 +64,7 @@ export default function Welcome() {
 
                 </BlurView>
 
-                <Text style={styles.footer}>© 2025 — Corp Social</Text>
+                <Text style={styles.footer}>© 2025 — Novence & Ascendri</Text>
             </View>
         </Screen>
     );
@@ -79,7 +77,7 @@ const styles = StyleSheet.create({
         gap: theme.spacing(2),
     },
 
-    /* Tag mic de sus */
+    /* Small top tag */
     pill: {
         paddingHorizontal: 14,
         paddingVertical: 6,
@@ -96,7 +94,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
     },
 
-    /* CARD UNIFORM */
+    /* Glass card container */
     glass: {
         width: '100%',
         padding: theme.spacing(3),
@@ -110,13 +108,13 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
 
-    /* strat uniform de gri transparent peste blur */
+    /* Semi-transparent overlay over blur */
     cardOverlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(45, 45, 45, 0.55)', // gri uniform transparent
+        backgroundColor: 'rgba(45, 45, 45, 0.55)',
     },
 
-    /* Titluri */
+    /* Titles */
     headTop: {
         color: '#fff',
         fontSize: 26,
@@ -140,7 +138,7 @@ const styles = StyleSheet.create({
 
     action: { marginTop: theme.spacing(1) },
 
-    /* blobs decorative */
+    /* Decorative blobs */
     blob: {
         position: 'absolute',
         width: BLOB,

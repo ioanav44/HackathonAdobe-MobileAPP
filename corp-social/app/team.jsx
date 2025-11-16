@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import Screen from '../components/Screen';
 import NavBar from '../components/navbar';
+import DailySummaryButton from '../components/DailySummaryButton';
 import { colors, theme } from '../constants/theme';
 import { supabase } from '../lib/supabase';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -82,7 +83,7 @@ export default function Team() {
         realtimeRef.current = channel;
     }, []);
 
-    // init
+
     useEffect(() => {
         (async () => {
             try {
@@ -163,6 +164,23 @@ export default function Team() {
         }
     };
 
+    const confirmDeleteMessage = (id) => {
+        Alert.alert('Confirmare', 'Ștergi acest mesaj?', [
+            { text: 'Nu', style: 'cancel' },
+            { text: 'Da, șterge', style: 'destructive', onPress: () => deleteMessage(id) },
+        ]);
+    };
+
+    const deleteMessage = async (id) => {
+        try {
+            const { error } = await supabase.from('messages').delete().eq('id', id);
+            if (error) return Alert.alert('Eroare', error.message);
+            setMessages(prev => (prev || []).filter(m => m.id !== id));
+        } catch (e) {
+            Alert.alert('Eroare', String(e?.message || e));
+        }
+    };
+
     const tabs = useMemo(() => {
         const arr = [{ key: 'general', label: 'General' }];
         if (deptChannel) arr.push({ key: 'dept', label: deptChannel.name });
@@ -174,13 +192,13 @@ export default function Team() {
 
     return (
         <Screen style={{ flex: 1, backgroundColor: 'transparent' }}>
-            {/* Fundal */}
+            {/* Background gradient and decorative blobs */}
             <LinearGradient colors={[colors.primary, colors.secondary]} start={{ x: 0.1, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFill} />
             <View style={[styles.blob, styles.blobA, { backgroundColor: colors.tertiary, opacity: 0.12 }]} />
             <View style={[styles.blob, styles.blobB, { backgroundColor: '#ffffff', opacity: 0.08 }]} />
             <View style={[styles.blob, styles.blobC, { backgroundColor: '#FFD7AE', opacity: 0.1 }]} />
 
-            {/* Header */}
+            {/* Header with tabs */}
             <View style={styles.header}>
                 <Text style={styles.title}>Conversații</Text>
                 <View style={styles.tabs}>
@@ -200,7 +218,7 @@ export default function Team() {
                 </View>
             </View>
 
-            {/* Lista mesaje */}
+            {/* Messages list */}
             {loading ? (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <ActivityIndicator size="large" color="#fff" />
@@ -226,13 +244,17 @@ export default function Team() {
                                         </Text>
                                     </View>
                                 )}
-                                <View style={[styles.bubble, mine ? styles.bubbleMine : styles.bubbleOther]}>
+                                <TouchableOpacity
+                                    activeOpacity={0.85}
+                                    onLongPress={mine ? () => confirmDeleteMessage(item.id) : undefined}
+                                    style={[styles.bubble, mine ? styles.bubbleMine : styles.bubbleOther]}
+                                >
                                     {!mine && <Text style={styles.author}>{item.author_email || 'Anon'}</Text>}
                                     <Text style={mine ? styles.bodyMine : styles.bodyOther}>{item.body}</Text>
                                     <Text style={mine ? styles.timeMine : styles.timeOther}>
                                         {new Date(item.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </Text>
-                                </View>
+                                </TouchableOpacity>
                             </View>
                         );
                     }}
@@ -240,7 +262,7 @@ export default function Team() {
                 />
             )}
 
-            {/* Composer */}
+            {/* Message composer */}
             <View style={[styles.composerWrap, { bottom: (insets.bottom || 0) + NAVBAR_H + 12 }]}>
                 <View style={styles.composer}>
                     <TextInput
@@ -256,6 +278,9 @@ export default function Team() {
                     </TouchableOpacity>
                 </View>
             </View>
+
+            {/* Daily summary button for quick counts */}
+            <DailySummaryButton entries={messages.map(m => ({ text: m.body || '', created_at: m.created_at }))} userLabel={email || 'Ziua ta'} />
 
             <NavBar user={{ email }} />
         </Screen>
@@ -310,6 +335,8 @@ const styles = StyleSheet.create({
     bodyMine: { color: '#FFFFFF' },
     timeOther: { color: '#6B7280', fontSize: 10, marginTop: 4 },
     timeMine: { color: 'rgba(255,255,255,0.8)', fontSize: 10, marginTop: 4 },
+
+    
 
     composerWrap: {
         position: 'absolute',

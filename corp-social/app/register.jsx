@@ -21,7 +21,7 @@ export default function Register() {
     const onCreate = async () => {
         if (!fullName || !email || !password) return Alert.alert('Completează toate câmpurile.');
         const { data, error } = await supabase.auth.signUp({ email, password });
-        if (error || !data.user) return Alert.alert('Eroare', error?.message || 'Sign up failed');
+        if (error || !data.user) return Alert.alert('Eroare', error?.message || 'Inregistrare eșuată.');
         Alert.alert('Cont creat');
         router.replace('/login');
     };
@@ -41,7 +41,7 @@ export default function Register() {
                     <Text style={styles.subtitle}>Începe experiența ta internă.</Text>
 
                     <Input label="Nume complet" placeholder="Nume Prenume" value={fullName} onChangeText={setFullName} autoCapitalize="words" />
-                    <Input label="Email" placeholder="you@company.com" value={email} onChangeText={setEmail} keyboardType="email-address" />
+                    <Input label="Email" placeholder="tu@companie.com" value={email} onChangeText={setEmail} keyboardType="email-address" />
                     <Input label="Parola" placeholder="••••••••" value={password} onChangeText={setPassword} secureTextEntry />
 
                     <Button title="Creează cont" onPress={onCreate} style={{ width:'100%', marginTop: theme.spacing(1) }} />

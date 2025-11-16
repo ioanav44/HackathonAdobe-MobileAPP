@@ -9,11 +9,10 @@ export default function RootLayout() {
     const router = useRouter();
     const pathname = usePathname();
 
-    // 🔹 1) Configurare bara de sistem Android (transparentă)
+    // System navigation bar styling (Android)
     useEffect(() => {
         (async () => {
             try {
-                // Bara de navigație devine transparentă (jos)
                 await NavigationBar.setBackgroundColorAsync('rgba(0,0,0,0)');
                 await NavigationBar.setButtonStyleAsync('light');
                 await NavigationBar.setBehaviorAsync('overlay-swipe');
@@ -23,24 +22,24 @@ export default function RootLayout() {
         })();
     }, []);
 
-    // 🔹 2) Verifică autentificarea și rutează utilizatorul
+    // Auth guard and routing
     useEffect(() => {
         (async () => {
             const { data } = await supabase.auth.getSession();
             const isAuthed = !!data.session;
             const openRoutes = ['/', '/login', '/register'];
 
-            // dacă nu e logat și încearcă o pagină protejată → trimite-l la login
+            // If not logged in and accessing a protected route → redirect to login
             if (!isAuthed && !openRoutes.includes(pathname)) {
                 router.replace('/login');
             }
             setReady(true);
         })();
 
-        // ascultă schimbarea sesiunii
+        // Listen to session changes
         const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
             if (session && (pathname === '/login' || pathname === '/register')) {
-                router.replace('/feed'); // după login mergem în feed
+                router.replace('/feed'); // redirect to feed after login
             }
             if (!session && pathname === '/feed') {
                 router.replace('/login');
@@ -50,13 +49,13 @@ export default function RootLayout() {
         return () => sub.subscription?.unsubscribe();
     }, [pathname]);
 
-    // 🔹 3) Așteaptă verificarea sesiunii
+    // Wait for session check
     if (!ready) return null;
 
-    // 🔹 4) Returnează layout global
+    // Global layout
     return (
         <>
-            {/* StatusBar: text alb, transparent peste gradient */}
+            {/* StatusBar: light text over gradient */}
             <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
             <Slot />
         </>

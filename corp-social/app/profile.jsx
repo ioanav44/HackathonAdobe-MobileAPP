@@ -17,7 +17,6 @@ export default function Profile() {
     const [fullName, setFullName] = useState('');
     const [dept, setDept]         = useState('');
 
-    // modal „Vezi profilul”
     const [viewOpen, setViewOpen] = useState(false);
 
     useEffect(() => {
